@@ -120,13 +120,13 @@ class Auth0Client {
   /// @param [String] params.phone_number user's phone number
   /// @returns a [Future] with [bool]
   Future<bool> sendOtpCode(dynamic params) async {
-    assert(params['phone_number'] != null);
+    assert(params['phone_number'] != null || params['email'] != null);
 
     var payload = Map.from(params)
       ..addAll({
         'client_id': this.clientId,
         'connection': "sms",
-        'send': "code",
+        'send': params['phone_number'] != null ? "code" : "email",
         "authParams": {"scope": "offline_access", "grant_type": "refresh_token"}
       });
 
@@ -138,13 +138,13 @@ class Auth0Client {
   /// [params] to send parameters
   /// @param [String] params.otp - code form sms or @param [String] params.username
   /// @returns a [Future] with [Auth0User]
-  Future<Auth0User> verifyPhoneWithOTP(dynamic params) async {
+  Future<Auth0User> verifyWithOTP(dynamic params, bool isSms = true) async {
     assert(params['username'] != null && params['otp'] != null);
 
     var payload = Map.from(params)
       ..addAll({
         'client_id': this.clientId,
-        'realm': "sms",
+        'realm': isSms ? "sms" : 'email',
         'grant_type': 'http://auth0.com/oauth/grant-type/passwordless/otp',
       });
 
