@@ -138,7 +138,7 @@ class Auth0Client {
   /// [params] to send parameters
   /// @param [String] params.otp - code form sms or @param [String] params.username
   /// @returns a [Future] with [Auth0User]
-  Future<Auth0User> verifyWithOTP(dynamic params, bool isSms = true) async {
+  Future<Auth0User> verifyWithOTP(dynamic params, {bool isSms = true}) async {
     assert(params['username'] != null && params['otp'] != null);
 
     var payload = Map.from(params)
