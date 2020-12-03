@@ -125,8 +125,8 @@ class Auth0Client {
     var payload = Map.from(params)
       ..addAll({
         'client_id': this.clientId,
-        'connection': "sms",
-        'send': params['phone_number'] != null ? "code" : "email",
+        'connection': params['phone_number'] != null ? "sms" : "email",
+        'send': "code",
         "authParams": {"scope": "offline_access", "grant_type": "refresh_token"}
       });
 
